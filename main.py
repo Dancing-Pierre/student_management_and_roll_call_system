@@ -117,12 +117,6 @@ class LoginRegisterFrame(tk.Frame):
         root = tk.Tk()
         root.title("学生管理系统")
 
-        # 连接到MySQL数据库
-        self.connection = pymysql.connect(host='localhost',
-                                          user='root',
-                                          password='123456',
-                                          db='students_db')
-
         # 创建两个标签页
         self.notebook = ttk.Notebook(root)
         self.notebook.pack()
@@ -220,7 +214,7 @@ class LoginRegisterFrame(tk.Frame):
         self.rb_sequential.pack(pady=10)
 
         # 创建游标对象
-        cursor = self.connection.cursor()
+        cursor = conn.cursor()
         # 从数据库中检索学生姓名
         query = "SELECT name FROM students"
         cursor.execute(query)
@@ -249,12 +243,12 @@ class LoginRegisterFrame(tk.Frame):
 
         # 主循环
         root.mainloop()
-        self.connection.close()
+        conn.close()
 
     # 定义函数
     def show_students(self):
         # 创建游标对象
-        cursor = self.connection.cursor()
+        cursor = conn.cursor()
         self.lb.delete(0, tk.END)
         # 执行SQL查询
         query = 'SELECT * FROM students'
@@ -267,7 +261,7 @@ class LoginRegisterFrame(tk.Frame):
 
     def add_student(self):
         # 创建游标对象
-        cursor = self.connection.cursor()
+        cursor = conn.cursor()
         id = self.entry_id.get().strip()
         name = self.entry_name.get().strip()
         age = self.entry_age.get().strip()
@@ -304,7 +298,7 @@ class LoginRegisterFrame(tk.Frame):
         # 执行SQL插入
         insert_query = f"INSERT INTO students (id, name, age, gender, phone) VALUES ('{id}', '{name}', {age}, '{gender}', '{phone}')"
         cursor.execute(insert_query)
-        self.connection.commit()
+        conn.commit()
         self.show_students()
         messagebox.showinfo("添加成功", f"添加成功，成功添加 {name} 同学。")  # 弹出消息框提示用户
         self.entry_id.delete(0, tk.END)
@@ -318,7 +312,7 @@ class LoginRegisterFrame(tk.Frame):
 
     def delete_student(self):
         # 创建游标对象
-        cursor = self.connection.cursor()
+        cursor = conn.cursor()
         index = self.lb.curselection()
         if not index:
             messagebox.showwarning("警告", "请选择要删除的学生")
@@ -328,7 +322,7 @@ class LoginRegisterFrame(tk.Frame):
         # 执行SQL删除
         delete_query = f"DELETE FROM students WHERE id='{id}'"
         cursor.execute(delete_query)
-        self.connection.commit()
+        conn.commit()
         self.show_students()
         messagebox.showinfo("删除成功", "删除该条学生信息成功。")  # 弹出消息框提示用户
         # 关闭游标和连接
@@ -336,7 +330,7 @@ class LoginRegisterFrame(tk.Frame):
 
     def update_student(self):
         # 创建游标对象
-        cursor = self.connection.cursor()
+        cursor = conn.cursor()
         index = self.lb.curselection()
         if not index:
             messagebox.showwarning("警告", "请选择要修改的学生")
@@ -352,7 +346,7 @@ class LoginRegisterFrame(tk.Frame):
         update_query = f"UPDATE students SET id='{new_id}', name='{name}', age={age}, gender='{gender}', phone='{phone}' WHERE id='{id}'"
         cursor.execute(update_query)
 
-        self.connection.commit()
+        conn.commit()
         self.show_students()
         self.entry_id.delete(0, tk.END)
         self.entry_name.delete(0, tk.END)
@@ -365,7 +359,7 @@ class LoginRegisterFrame(tk.Frame):
 
     def search_student(self):
         # 创建游标对象
-        cursor = self.connection.cursor()
+        cursor = conn.cursor()
         keyword = self.entry_search.get().strip()
         if not keyword:
             self.show_students()
@@ -388,7 +382,7 @@ class LoginRegisterFrame(tk.Frame):
         self.roll_call_mode.set("sequential")
 
     def roll_call(self):
-        cursor = self.connection.cursor()
+        cursor = conn.cursor()
         # 从数据库中检索学生姓名
         query = "SELECT name FROM students"
         cursor.execute(query)
@@ -418,12 +412,12 @@ class LoginRegisterFrame(tk.Frame):
         insert_query = "INSERT INTO history (date, name) VALUES (%s, %s)"
         values = (self.today, selected_student)
         cursor.execute(insert_query, values)
-        self.connection.commit()
+        conn.commit()
         # 关闭游标和连接
         cursor.close()
 
     def view_history(self):
-        cursor = self.connection.cursor()
+        cursor = conn.cursor()
         # 从数据库中检索历史记录
         query = "SELECT date, name FROM history ORDER BY date ASC"
         cursor.execute(query)
