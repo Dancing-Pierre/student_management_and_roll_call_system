@@ -106,12 +106,18 @@ class LoginRegisterFrame(tk.Frame):
             messagebox.showwarning("输入为空", "请输入用户名和密码")
         elif login(username, password):
             self.master.destroy()  # 删除登录窗口
-            self.open_main_window()
+            if username == 'admin':
+                # 管理员进入用户管理界面
+                self.open_admin_window()
+            else:
+                # 普通用户进入点名界面
+                self.open_main_window()
         else:
             messagebox.showerror("登陆失败", "用户名或密码错误")
             self.username_entry.delete(0, tk.END)  # 清空用户名输入框
             self.password_entry.delete(0, tk.END)  # 清空密码输入框
 
+    # 普通用户主页面
     def open_main_window(self):
         # 创建主窗口
         root = tk.Tk()
@@ -245,6 +251,191 @@ class LoginRegisterFrame(tk.Frame):
         root.mainloop()
         conn.close()
 
+    # 管理用户界面
+    def open_admin_window(self):
+        # 创建主窗口
+        root = tk.Tk()
+        root.title("管理员界面")
+
+        # 创建两个标签页
+        self.notebook = ttk.Notebook(root)
+        self.notebook.pack()
+
+        # 标签页一：用户信息管理
+        self.tab_user = ttk.Frame(self.notebook)
+        self.notebook.add(self.tab_user, text="管理用户信息")
+
+        # 创建学生信息管理界面的控件
+        self.frame_user = tk.Frame(self.tab_user)
+        self.frame_user.pack(padx=10, pady=10)
+
+        # 创建控件
+        self.lb_user = tk.Listbox(self.frame_user, width=40, height=15)
+        self.lb_user.pack()
+
+        self.frame_add = tk.Frame(self.frame_user)
+        self.frame_add.pack(pady=5)
+
+        self.label_username = tk.Label(self.frame_add, text="用户名：")
+        self.label_username.grid(row=0, column=0, padx=5, pady=5)
+
+        self.entry_username = tk.Entry(self.frame_add)
+        self.entry_username.grid(row=0, column=1, padx=5, pady=5)
+
+        self.label_password = tk.Label(self.frame_add, text="密码：")
+        self.label_password.grid(row=1, column=0, padx=5, pady=5)
+
+        self.entry_password = tk.Entry(self.frame_add)
+        self.entry_password.grid(row=1, column=1, padx=5, pady=5)
+
+        self.btn_add_user = tk.Button(self.frame_add, text="添加", command=self.add_user)
+        self.btn_add_user.grid(row=5, column=0, padx=5, pady=5)
+
+        self.btn_update_user = tk.Button(self.frame_add, text="修改", command=self.update_user)
+        self.btn_update_user.grid(row=5, column=1, padx=5, pady=5)
+
+        self.btn_delete_user = tk.Button(self.frame_add, text="删除", command=self.delete_user)
+        self.btn_delete_user.grid(row=5, column=2, padx=5, pady=5)
+
+        self.frame_search_user = tk.Frame(self.frame_user)
+        self.frame_search_user.pack(pady=5)
+
+        self.btn_search_user = tk.Button(self.frame_search_user, text="搜索", command=self.search_user)
+        self.btn_search_user.grid(row=0, column=2, padx=5, pady=5)
+
+        self.btn_showall_user = tk.Button(self.frame_search_user, text="显示全部", command=self.show_user)
+        self.btn_showall_user.grid(row=0, column=3, padx=5, pady=5)
+
+        self.entry_search_user = tk.Entry(self.frame_search_user)
+        self.entry_search_user.grid(row=0, column=1, padx=5, pady=5)
+
+        # 显示数据
+        self.show_user()
+
+        # 标签页一：学生信息管理
+        self.tab_students = ttk.Frame(self.notebook)
+        self.notebook.add(self.tab_students, text="学生信息")
+
+        # 创建学生信息管理界面的控件
+        self.frame_students = tk.Frame(self.tab_students)
+        self.frame_students.pack(padx=10, pady=10)
+
+        # 创建控件
+        self.lb = tk.Listbox(self.frame_students, width=40, height=15)
+        self.lb.pack()
+
+        self.frame_add = tk.Frame(self.frame_students)
+        self.frame_add.pack(pady=5)
+
+        self.label_id = tk.Label(self.frame_add, text="学号：")
+        self.label_id.grid(row=0, column=0, padx=5, pady=5)
+
+        self.entry_id = tk.Entry(self.frame_add)
+        self.entry_id.grid(row=0, column=1, padx=5, pady=5)
+
+        self.label_name = tk.Label(self.frame_add, text="姓名：")
+        self.label_name.grid(row=1, column=0, padx=5, pady=5)
+
+        self.entry_name = tk.Entry(self.frame_add)
+        self.entry_name.grid(row=1, column=1, padx=5, pady=5)
+
+        self.label_age = tk.Label(self.frame_add, text="年龄：")
+        self.label_age.grid(row=2, column=0, padx=5, pady=5)
+
+        self.entry_age = tk.Entry(self.frame_add)
+        self.entry_age.grid(row=2, column=1, padx=5, pady=5)
+
+        self.label_gender = tk.Label(self.frame_add, text="性别：")
+        self.label_gender.grid(row=3, column=0, padx=5, pady=5)
+
+        self.entry_gender = tk.Entry(self.frame_add)
+        self.entry_gender.grid(row=3, column=1, padx=5, pady=5)
+
+        self.label_phone = tk.Label(self.frame_add, text="电话：")
+        self.label_phone.grid(row=4, column=0, padx=5, pady=5)
+
+        self.entry_phone = tk.Entry(self.frame_add)
+        self.entry_phone.grid(row=4, column=1, padx=5, pady=5)
+
+        self.btn_add = tk.Button(self.frame_add, text="添加", command=self.add_student)
+        self.btn_add.grid(row=5, column=0, padx=5, pady=5)
+
+        self.btn_update = tk.Button(self.frame_add, text="修改", command=self.update_student)
+        self.btn_update.grid(row=5, column=1, padx=5, pady=5)
+
+        self.btn_delete = tk.Button(self.frame_add, text="删除", command=self.delete_student)
+        self.btn_delete.grid(row=5, column=2, padx=5, pady=5)
+
+        self.frame_search = tk.Frame(self.frame_students)
+        self.frame_search.pack(pady=5)
+
+        self.btn_search = tk.Button(self.frame_search, text="搜索", command=self.search_student)
+        self.btn_search.grid(row=0, column=2, padx=5, pady=5)
+
+        self.btn_showall = tk.Button(self.frame_search, text="显示全部", command=self.show_students)
+        self.btn_showall.grid(row=0, column=3, padx=5, pady=5)
+
+        self.entry_search = tk.Entry(self.frame_search)
+        self.entry_search.grid(row=0, column=1, padx=5, pady=5)
+
+        # 显示数据
+        # self.show_students()
+
+        # 标签页二：点名系统
+        self.tab_rollcall = ttk.Frame(self.notebook)
+        self.notebook.add(self.tab_rollcall, text="点名系统")
+
+        # 添加当前日期标签
+        self.today = date.today().strftime("%Y/%m/%d")
+        self.label_date = tk.Label(self.tab_rollcall, text=f"今天是 {self.today}")
+        self.label_date.pack(pady=10)
+
+        # 增加点名模式选择器
+        self.roll_call_mode = tk.StringVar()
+        self.roll_call_mode.set("random")
+
+        self.rb_random = tk.Radiobutton(self.tab_rollcall, text="随机点名", variable=self.roll_call_mode,
+                                        value="random",
+                                        command=self.set_roll_call_mode_random)
+        self.rb_random.pack(pady=10)
+
+        self.rb_sequential = tk.Radiobutton(self.tab_rollcall, text="按顺序点名", variable=self.roll_call_mode,
+                                            value="sequential",
+                                            command=self.set_roll_call_mode_sequential)
+        self.rb_sequential.pack(pady=10)
+
+        # 创建游标对象
+        cursor = conn.cursor()
+        # 从数据库中检索学生姓名
+        query = "SELECT name FROM students"
+        cursor.execute(query)
+        # 关闭游标和连接
+        cursor.close()
+
+        self.btn_roll_call = tk.Button(self.tab_rollcall, text="点名", command=self.roll_call)
+        self.btn_roll_call.pack(pady=10)
+
+        # 增加点名结果标签
+        self.label_result = tk.Label(self.tab_rollcall, font=("Helvetica", 35), text="")
+        self.label_result.pack(pady=10)
+
+        # 增加点名记录按钮
+        self.roll_call_history = []
+
+        self.btn_history = tk.Button(self.tab_rollcall, text="查看历史", command=self.view_history)
+        self.btn_history.pack(pady=10)
+
+        # 创建点名界面的控件
+        self.frame_rollcall = tk.Frame(self.tab_rollcall)
+        self.frame_rollcall.pack(padx=10, pady=5)
+
+        self.lb_2 = tk.Listbox(self.frame_rollcall, width=40, height=13)
+        self.lb_2.pack()
+
+        # 主循环
+        root.mainloop()
+        conn.close()
+
     # 定义函数
     def show_students(self):
         # 创建游标对象
@@ -256,6 +447,20 @@ class LoginRegisterFrame(tk.Frame):
         # 处理查询结果
         for row in cursor:
             self.lb.insert(tk.END, f"{row[0]} {row[1]} {row[2]} {row[3]} {row[4]}")
+        # 关闭游标和连接
+        cursor.close()
+
+    # 搜索全部用户
+    def show_user(self):
+        # 创建游标对象
+        cursor = conn.cursor()
+        self.lb_user.delete(0, tk.END)
+        # 执行SQL查询
+        query = 'SELECT * FROM user'
+        cursor.execute(query)
+        # 处理查询结果
+        for row in cursor:
+            self.lb_user.insert(tk.END, f"{row[0]} {row[1]}")
         # 关闭游标和连接
         cursor.close()
 
@@ -310,6 +515,46 @@ class LoginRegisterFrame(tk.Frame):
         # 关闭游标和连接
         cursor.close()
 
+    def add_user(self):
+        # 创建游标对象
+        cursor = conn.cursor()
+        username = self.entry_username.get().strip()
+        passwd = self.entry_password.get().strip()
+        password_hash = md5(passwd)
+        if not username or not passwd:
+            messagebox.showwarning("警告", "请输入完整的用户信息")
+            return
+        # 执行SQL查询
+        select_query = f"SELECT * FROM user WHERE username='{username}'"
+        cursor.execute(select_query)
+        # 判断学号是否已经存在
+        if cursor.fetchone():
+            messagebox.showwarning("警告", "该用户已存在")
+            self.entry_id.delete(0, tk.END)
+            self.entry_name.delete(0, tk.END)
+            return
+        # 执行SQL查询
+        select_query_1 = f"SELECT * FROM user WHERE username='{username}'"
+        cursor.execute(select_query_1)
+        # 判断名字是否存在
+        if cursor.fetchone():
+            messagebox.showwarning("警告", "该用户名已存在，如有同名请按照 _1 _2 区别")
+            self.entry_id.delete(0, tk.END)
+            self.entry_name.delete(0, tk.END)
+            return
+
+        # 执行SQL插入
+        insert_query = f"INSERT INTO user (username, password_hash) VALUES ('{username}','{password_hash}')"
+        cursor.execute(insert_query)
+        conn.commit()
+        self.show_user()
+        messagebox.showinfo("添加成功", f"添加成功，成功添加 {username} 用户。")  # 弹出消息框提示用户
+        self.entry_username.delete(0, tk.END)
+        self.entry_password.delete(0, tk.END)
+
+        # 关闭游标和连接
+        cursor.close()
+
     def delete_student(self):
         # 创建游标对象
         cursor = conn.cursor()
@@ -327,6 +572,28 @@ class LoginRegisterFrame(tk.Frame):
         messagebox.showinfo("删除成功", "删除该条学生信息成功。")  # 弹出消息框提示用户
         # 关闭游标和连接
         cursor.close()
+
+    # 删除用户
+    def delete_user(self):
+        # 创建游标对象
+        cursor = conn.cursor()
+        index = self.lb_user.curselection()
+        if not index:
+            messagebox.showwarning("警告", "请选择要删除的用户")
+            return
+        selected_student = self.lb_user.get(index)
+        id = selected_student.split()[0]
+        if id == '9999':
+            messagebox.showwarning("警告", "删除失败，管理员账号无法删除！")  # 弹出消息框提示用户
+        else:
+            # 执行SQL删除
+            delete_query = f"DELETE FROM user WHERE id='{id}'"
+            cursor.execute(delete_query)
+            conn.commit()
+            self.show_user()
+            messagebox.showinfo("删除成功", "删除该条用户信息成功。")  # 弹出消息框提示用户
+            # 关闭游标和连接
+            cursor.close()
 
     def update_student(self):
         # 创建游标对象
@@ -357,6 +624,35 @@ class LoginRegisterFrame(tk.Frame):
         # 关闭游标和连接
         cursor.close()
 
+    # 更新用户信息
+    def update_user(self):
+        # 创建游标对象
+        cursor = conn.cursor()
+        index = self.lb_user.curselection()
+        if not index:
+            messagebox.showwarning("警告", "请选择要修改的用户")
+            return
+        selected_student = self.lb_user.get(index)
+        id = selected_student.split()[0]
+        username = self.entry_username.get().strip()
+        if username == 'admin':
+            self.entry_id.delete(0, tk.END)
+            self.entry_name.delete(0, tk.END)
+            messagebox.showwarning("警告", "更新失败，管理员账号无法修改！")  # 弹出消息框提示用户
+        else:
+            passwd = self.entry_password.get().strip()
+            password_hash = md5(passwd)
+            # 执行SQL更新
+            update_query = f"UPDATE user SET username='{username}', password_hash='{password_hash}'WHERE id='{id}'"
+            cursor.execute(update_query)
+            conn.commit()
+            self.show_user()
+            self.entry_username.delete(0, tk.END)
+            self.entry_password.delete(0, tk.END)
+            messagebox.showinfo("更新成功", "更新成功，用户信息已更新。")  # 弹出消息框提示用户
+            # 关闭游标和连接
+            cursor.close()
+
     def search_student(self):
         # 创建游标对象
         cursor = conn.cursor()
@@ -372,6 +668,24 @@ class LoginRegisterFrame(tk.Frame):
         # 处理查询结果
         for row in cursor:
             self.lb.insert(tk.END, f"{row[0]} {row[1]} {row[2]} {row[3]} {row[4]}")
+        # 关闭游标和连接
+        cursor.close()
+
+    def search_user(self):
+        # 创建游标对象
+        cursor = conn.cursor()
+        keyword = self.entry_search_user.get().strip()
+        if not keyword:
+            self.show_user()
+            return
+        self.entry_search_user.delete(0, tk.END)
+        self.lb_user.delete(0, tk.END)
+        # 执行SQL查询
+        query = f"SELECT * FROM user WHERE username LIKE '%{keyword}%'"
+        cursor.execute(query)
+        # 处理查询结果
+        for row in cursor:
+            self.lb_user.insert(tk.END, f"{row[0]} {row[1]}")
         # 关闭游标和连接
         cursor.close()
 
