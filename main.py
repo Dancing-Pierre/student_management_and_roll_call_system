@@ -1,3 +1,4 @@
+import time
 import tkinter as tk
 from datetime import date
 from tkinter import ttk
@@ -136,7 +137,7 @@ class LoginRegisterFrame(tk.Frame):
         self.frame_students.pack(padx=10, pady=10)
 
         # 创建控件
-        self.lb = tk.Listbox(self.frame_students, width=40, height=15)
+        self.lb = tk.Listbox(self.frame_students, width=40, height=10)
         self.lb.pack()
 
         self.frame_add = tk.Frame(self.frame_students)
@@ -166,20 +167,35 @@ class LoginRegisterFrame(tk.Frame):
         self.entry_gender = tk.Entry(self.frame_add)
         self.entry_gender.grid(row=3, column=1, padx=5, pady=5)
 
-        self.label_phone = tk.Label(self.frame_add, text="电话：")
-        self.label_phone.grid(row=4, column=0, padx=5, pady=5)
+        # 家长姓名
+        self.label_parents_name = tk.Label(self.frame_add, text="家长姓名：")
+        self.label_parents_name.grid(row=4, column=0, padx=5, pady=5)
+
+        self.entry_parents_name = tk.Entry(self.frame_add)
+        self.entry_parents_name.grid(row=4, column=1, padx=5, pady=5)
+
+        # 家长电话
+        self.label_phone = tk.Label(self.frame_add, text="家长电话：")
+        self.label_phone.grid(row=5, column=0, padx=5, pady=5)
 
         self.entry_phone = tk.Entry(self.frame_add)
-        self.entry_phone.grid(row=4, column=1, padx=5, pady=5)
+        self.entry_phone.grid(row=5, column=1, padx=5, pady=5)
+
+        # 家庭住址
+        self.label_address = tk.Label(self.frame_add, text="家庭住址：")
+        self.label_address.grid(row=6, column=0, padx=5, pady=5)
+
+        self.entry_address = tk.Entry(self.frame_add)
+        self.entry_address.grid(row=6, column=1, padx=5, pady=5)
 
         self.btn_add = tk.Button(self.frame_add, text="添加", command=self.add_student)
-        self.btn_add.grid(row=5, column=0, padx=5, pady=5)
+        self.btn_add.grid(row=7, column=0, padx=5, pady=5)
 
         self.btn_update = tk.Button(self.frame_add, text="修改", command=self.update_student)
-        self.btn_update.grid(row=5, column=1, padx=5, pady=5)
+        self.btn_update.grid(row=7, column=1, padx=5, pady=5)
 
         self.btn_delete = tk.Button(self.frame_add, text="删除", command=self.delete_student)
-        self.btn_delete.grid(row=5, column=2, padx=5, pady=5)
+        self.btn_delete.grid(row=7, column=2, padx=5, pady=5)
 
         self.frame_search = tk.Frame(self.frame_students)
         self.frame_search.pack(pady=5)
@@ -246,6 +262,63 @@ class LoginRegisterFrame(tk.Frame):
 
         self.lb_2 = tk.Listbox(self.frame_rollcall, width=40, height=13)
         self.lb_2.pack()
+
+        # 标签页3：成绩系统
+        self.tab_score = ttk.Frame(self.notebook)
+        self.notebook.add(self.tab_score, text="成绩系统")
+
+        # 创建成绩管理界面的控件
+        self.frame_score = tk.Frame(self.tab_score)
+        self.frame_score.pack(padx=10, pady=10)
+
+        # 创建控件
+        self.lb_3 = tk.Listbox(self.frame_score, width=40, height=15)
+        self.lb_3.pack()
+
+        self.frame_score_add = tk.Frame(self.frame_score)
+        self.frame_score_add.pack(pady=5)
+
+        self.label_students_name = tk.Label(self.frame_score_add, text="学生姓名：")
+        self.label_students_name.grid(row=0, column=0, padx=5, pady=5)
+
+        self.entry_students_name = tk.Entry(self.frame_score_add)
+        self.entry_students_name.grid(row=0, column=1, padx=5, pady=5)
+
+        self.label_class = tk.Label(self.frame_score_add, text="班级：")
+        self.label_class.grid(row=1, column=0, padx=5, pady=5)
+
+        self.entry_class = tk.Entry(self.frame_score_add)
+        self.entry_class.grid(row=1, column=1, padx=5, pady=5)
+
+        self.label_subject = tk.Label(self.frame_score_add, text="科目：")
+        self.label_subject.grid(row=2, column=0, padx=5, pady=5)
+
+        self.entry_subject = tk.Entry(self.frame_score_add)
+        self.entry_subject.grid(row=2, column=1, padx=5, pady=5)
+
+        self.label_score = tk.Label(self.frame_score_add, text="成绩：")
+        self.label_score.grid(row=3, column=0, padx=5, pady=5)
+
+        self.entry_score = tk.Entry(self.frame_score_add)
+        self.entry_score.grid(row=3, column=1, padx=5, pady=5)
+
+        self.btn_score_add = tk.Button(self.frame_score_add, text="添加", command=self.add_score)
+        self.btn_score_add.grid(row=4, column=0, padx=5, pady=5)
+
+        self.btn_score_delete = tk.Button(self.frame_score_add, text="删除", command=self.delete_score)
+        self.btn_score_delete.grid(row=4, column=2, padx=5, pady=5)
+
+        self.frame_score_search = tk.Frame(self.frame_score)
+        self.frame_score_search.pack(pady=5)
+
+        self.btn_score_sort = tk.Button(self.frame_score_search, text="排序", command=self.sort_score)
+        self.btn_score_sort.grid(row=0, column=2, padx=5, pady=5)
+
+        self.btn_score_showall = tk.Button(self.frame_score_search, text="显示全部", command=self.show_score)
+        self.btn_score_showall.grid(row=0, column=3, padx=5, pady=5)
+
+        self.entry_score_search_sort = tk.Entry(self.frame_score_search)
+        self.entry_score_search_sort.grid(row=0, column=1, padx=15, pady=5)
 
         # 主循环
         root.mainloop()
@@ -321,7 +394,7 @@ class LoginRegisterFrame(tk.Frame):
         self.frame_students.pack(padx=10, pady=10)
 
         # 创建控件
-        self.lb = tk.Listbox(self.frame_students, width=40, height=15)
+        self.lb = tk.Listbox(self.frame_students, width=40, height=10)
         self.lb.pack()
 
         self.frame_add = tk.Frame(self.frame_students)
@@ -351,20 +424,35 @@ class LoginRegisterFrame(tk.Frame):
         self.entry_gender = tk.Entry(self.frame_add)
         self.entry_gender.grid(row=3, column=1, padx=5, pady=5)
 
-        self.label_phone = tk.Label(self.frame_add, text="电话：")
-        self.label_phone.grid(row=4, column=0, padx=5, pady=5)
+        # 家长姓名
+        self.label_parents_name = tk.Label(self.frame_add, text="家长姓名：")
+        self.label_parents_name.grid(row=4, column=0, padx=5, pady=5)
+
+        self.entry_parents_name = tk.Entry(self.frame_add)
+        self.entry_parents_name.grid(row=4, column=1, padx=5, pady=5)
+
+        # 家长电话
+        self.label_phone = tk.Label(self.frame_add, text="家长电话：")
+        self.label_phone.grid(row=5, column=0, padx=5, pady=5)
 
         self.entry_phone = tk.Entry(self.frame_add)
-        self.entry_phone.grid(row=4, column=1, padx=5, pady=5)
+        self.entry_phone.grid(row=5, column=1, padx=5, pady=5)
+
+        # 家庭住址
+        self.label_address = tk.Label(self.frame_add, text="家庭住址：")
+        self.label_address.grid(row=6, column=0, padx=5, pady=5)
+
+        self.entry_address = tk.Entry(self.frame_add)
+        self.entry_address.grid(row=6, column=1, padx=5, pady=5)
 
         self.btn_add = tk.Button(self.frame_add, text="添加", command=self.add_student)
-        self.btn_add.grid(row=5, column=0, padx=5, pady=5)
+        self.btn_add.grid(row=7, column=0, padx=5, pady=5)
 
         self.btn_update = tk.Button(self.frame_add, text="修改", command=self.update_student)
-        self.btn_update.grid(row=5, column=1, padx=5, pady=5)
+        self.btn_update.grid(row=7, column=1, padx=5, pady=5)
 
         self.btn_delete = tk.Button(self.frame_add, text="删除", command=self.delete_student)
-        self.btn_delete.grid(row=5, column=2, padx=5, pady=5)
+        self.btn_delete.grid(row=7, column=2, padx=5, pady=5)
 
         self.frame_search = tk.Frame(self.frame_students)
         self.frame_search.pack(pady=5)
@@ -432,21 +520,185 @@ class LoginRegisterFrame(tk.Frame):
         self.lb_2 = tk.Listbox(self.frame_rollcall, width=40, height=13)
         self.lb_2.pack()
 
+        # 标签页3：成绩系统
+        self.tab_score = ttk.Frame(self.notebook)
+        self.notebook.add(self.tab_score, text="成绩系统")
+
+        # 创建成绩管理界面的控件
+        self.frame_score = tk.Frame(self.tab_score)
+        self.frame_score.pack(padx=10, pady=10)
+
+        # 创建控件
+        self.lb_3 = tk.Listbox(self.frame_score, width=40, height=15)
+        self.lb_3.pack()
+
+        self.frame_score_add = tk.Frame(self.frame_score)
+        self.frame_score_add.pack(pady=5)
+
+        self.label_students_name = tk.Label(self.frame_score_add, text="学生姓名：")
+        self.label_students_name.grid(row=0, column=0, padx=5, pady=5)
+
+        self.entry_students_name = tk.Entry(self.frame_score_add)
+        self.entry_students_name.grid(row=0, column=1, padx=5, pady=5)
+
+        self.label_class = tk.Label(self.frame_score_add, text="班级：")
+        self.label_class.grid(row=1, column=0, padx=5, pady=5)
+
+        self.entry_class = tk.Entry(self.frame_score_add)
+        self.entry_class.grid(row=1, column=1, padx=5, pady=5)
+
+        self.label_subject = tk.Label(self.frame_score_add, text="科目：")
+        self.label_subject.grid(row=2, column=0, padx=5, pady=5)
+
+        self.entry_subject = tk.Entry(self.frame_score_add)
+        self.entry_subject.grid(row=2, column=1, padx=5, pady=5)
+
+        self.label_score = tk.Label(self.frame_score_add, text="成绩：")
+        self.label_score.grid(row=3, column=0, padx=5, pady=5)
+
+        self.entry_score = tk.Entry(self.frame_score_add)
+        self.entry_score.grid(row=3, column=1, padx=5, pady=5)
+
+        self.btn_score_add = tk.Button(self.frame_score_add, text="添加", command=self.add_score)
+        self.btn_score_add.grid(row=4, column=0, padx=5, pady=5)
+
+        self.btn_score_delete = tk.Button(self.frame_score_add, text="删除", command=self.delete_score)
+        self.btn_score_delete.grid(row=4, column=2, padx=5, pady=5)
+
+        self.frame_score_search = tk.Frame(self.frame_score)
+        self.frame_score_search.pack(pady=5)
+
+        self.btn_score_sort = tk.Button(self.frame_score_search, text="排序", command=self.sort_score)
+        self.btn_score_sort.grid(row=0, column=2, padx=5, pady=5)
+
+        self.btn_score_showall = tk.Button(self.frame_score_search, text="显示全部", command=self.show_score)
+        self.btn_score_showall.grid(row=0, column=3, padx=5, pady=5)
+
+        self.entry_score_search_sort = tk.Entry(self.frame_score_search)
+        self.entry_score_search_sort.grid(row=0, column=1, padx=15, pady=5)
+
         # 主循环
         root.mainloop()
         conn.close()
+
+    def add_score(self):
+        # 创建游标对象
+        cursor = conn.cursor()
+        students_name = self.entry_students_name.get().strip()
+        students_class = self.entry_class.get().strip()
+        students_subject = self.entry_subject.get().strip()
+        score = self.entry_score.get().strip()
+        if not students_name or not students_class or not students_subject or not score:
+            messagebox.showwarning("警告", "请输入完整的成绩信息")
+            return
+        # 执行SQL查询
+        select_query = f"SELECT * FROM students WHERE name='{students_name}'"
+        cursor.execute(select_query)
+        # 判断名字是否已经存在
+        if not cursor.fetchone():
+            messagebox.showwarning("警告", "该学生不存在，请去学生列表添加学生信息")
+            self.entry_students_name.delete(0, tk.END)
+            self.entry_class.delete(0, tk.END)
+            self.entry_subject.delete(0, tk.END)
+            self.entry_score.delete(0, tk.END)
+            return
+        # 执行SQL查询
+        select_query_1 = f"SELECT * FROM score WHERE name = '{students_name}' and subject='{students_subject}'"
+        cursor.execute(select_query_1)
+        # 判断科目是否存在
+        if cursor.fetchone():
+            messagebox.showwarning("警告", "该同学该科目成绩已上传！")
+            self.entry_students_name.delete(0, tk.END)
+            self.entry_class.delete(0, tk.END)
+            self.entry_subject.delete(0, tk.END)
+            self.entry_score.delete(0, tk.END)
+            return
+        # 执行SQL插入
+        insert_query = f"INSERT INTO score (`name`, `class`, `subject`, `score`) VALUES ('{students_name}', '{students_class}', '{students_subject}', '{score}')"
+        cursor.execute(insert_query)
+        conn.commit()
+        self.show_score()
+        messagebox.showinfo("添加成功",
+                            f"添加成功，成功添加 {students_name} 同学的 {students_subject} 成绩。")  # 弹出消息框提示用户
+        self.entry_students_name.delete(0, tk.END)
+        self.entry_class.delete(0, tk.END)
+        self.entry_subject.delete(0, tk.END)
+        self.entry_score.delete(0, tk.END)
+        # 关闭游标和连接
+        cursor.close()
+
+    def delete_score(self):
+        # 创建游标对象
+        cursor = conn.cursor()
+        index = self.lb_3.curselection()
+        if not index:
+            messagebox.showwarning("警告", "请选择要删除的学生成绩")
+            return
+        selected_student = self.lb_3.get(index)
+        student_name = selected_student.split('|')[0]
+        student_subject = selected_student.split('|')[2]
+        # 执行SQL删除
+        delete_query = f"DELETE FROM score WHERE name='{student_name}' and subject = '{student_subject}'"
+        cursor.execute(delete_query)
+        conn.commit()
+        self.show_score()
+        messagebox.showinfo("删除成功", "删除该条学生成绩信息成功。")  # 弹出消息框提示用户
+        # 关闭游标和连接
+        cursor.close()
+
+    def sort_score(self):
+        # 创建游标对象
+        cursor = conn.cursor()
+        keyword = self.entry_score_search_sort.get().strip()
+        if not keyword:
+            self.show_score()
+            return
+        self.entry_score_search_sort.delete(0, tk.END)
+        self.lb_3.delete(0, tk.END)
+        self.lb_3.insert(tk.END, f"姓名|班级|科目|成绩")
+        if '|' in keyword:
+            subject = keyword.split('|')[0]
+            student_class = keyword.split('|')[1]
+            query = f"SELECT * FROM score WHERE subject LIKE '%{subject}%' and class = '{student_class}' ORDER BY score DESC;"
+        else:
+            if '班' in keyword:
+                query = f"SELECT * FROM score WHERE class = '{keyword}' ORDER BY score DESC;"
+            else:
+                # 执行SQL查询
+                query = f"SELECT * FROM score WHERE subject LIKE '%{keyword}%' ORDER BY score DESC;"
+        cursor.execute(query)
+        # 处理查询结果
+        for row in cursor:
+            self.lb_3.insert(tk.END, f"{row[0]}|{row[1]}|{row[2]}|{row[3]}")
+        # 关闭游标和连接
+        cursor.close()
+
+    def show_score(self):
+        # 创建游标对象
+        cursor = conn.cursor()
+        self.lb_3.delete(0, tk.END)
+        self.lb_3.insert(tk.END, f"姓名|班级|科目|成绩 ")
+        # 执行SQL查询
+        query = 'SELECT * FROM score'
+        cursor.execute(query)
+        # 处理查询结果
+        for row in cursor:
+            self.lb_3.insert(tk.END, f"{row[0]}|{row[1]}|{row[2]}|{row[3]}")
+        # 关闭游标和连接
+        cursor.close()
 
     # 定义函数
     def show_students(self):
         # 创建游标对象
         cursor = conn.cursor()
         self.lb.delete(0, tk.END)
+        self.lb.insert(tk.END, f"学号|姓名|年龄|性别|父母手机|父母名字|家庭住址 ")
         # 执行SQL查询
         query = 'SELECT * FROM students'
         cursor.execute(query)
         # 处理查询结果
         for row in cursor:
-            self.lb.insert(tk.END, f"{row[0]} {row[1]} {row[2]} {row[3]} {row[4]}")
+            self.lb.insert(tk.END, f"{row[0]}|{row[1]}|{row[2]}|{row[3]}|{row[4]}|{row[5]}|{row[6]}")
         # 关闭游标和连接
         cursor.close()
 
@@ -472,6 +724,8 @@ class LoginRegisterFrame(tk.Frame):
         age = self.entry_age.get().strip()
         gender = self.entry_gender.get().strip()
         phone = self.entry_phone.get().strip()
+        parents_name = self.entry_parents_name.get().strip()
+        address = self.entry_address.get().strip()
         if not id or not name or not age or not gender or not phone:
             messagebox.showwarning("警告", "请输入完整的学生信息")
             return
@@ -486,6 +740,8 @@ class LoginRegisterFrame(tk.Frame):
             self.entry_age.delete(0, tk.END)
             self.entry_gender.delete(0, tk.END)
             self.entry_phone.delete(0, tk.END)
+            self.entry_parents_name.delete(0, tk.END)
+            self.entry_address.delete(0, tk.END)
             return
         # 执行SQL查询
         select_query_1 = f"SELECT * FROM students WHERE name='{name}'"
@@ -498,10 +754,12 @@ class LoginRegisterFrame(tk.Frame):
             self.entry_age.delete(0, tk.END)
             self.entry_gender.delete(0, tk.END)
             self.entry_phone.delete(0, tk.END)
+            self.entry_parents_name.delete(0, tk.END)
+            self.entry_address.delete(0, tk.END)
             return
 
         # 执行SQL插入
-        insert_query = f"INSERT INTO students (id, name, age, gender, phone) VALUES ('{id}', '{name}', {age}, '{gender}', '{phone}')"
+        insert_query = f"INSERT INTO students (id, name, age, gender, phone,parents_name,address) VALUES ('{id}', '{name}', {age}, '{gender}', '{phone}','{parents_name}','{address}')"
         cursor.execute(insert_query)
         conn.commit()
         self.show_students()
@@ -511,6 +769,8 @@ class LoginRegisterFrame(tk.Frame):
         self.entry_age.delete(0, tk.END)
         self.entry_gender.delete(0, tk.END)
         self.entry_phone.delete(0, tk.END)
+        self.entry_parents_name.delete(0, tk.END)
+        self.entry_address.delete(0, tk.END)
 
         # 关闭游标和连接
         cursor.close()
@@ -603,14 +863,16 @@ class LoginRegisterFrame(tk.Frame):
             messagebox.showwarning("警告", "请选择要修改的学生")
             return
         selected_student = self.lb.get(index)
-        id = selected_student.split()[0]
+        id = selected_student.split('|')[0]
         new_id = self.entry_id.get().strip()
         name = self.entry_name.get().strip()
         age = self.entry_age.get().strip()
         gender = self.entry_gender.get().strip()
         phone = self.entry_phone.get().strip()
+        parents_name = self.entry_parents_name.get().strip()
+        address = self.entry_address.get().strip()
         # 执行SQL更新
-        update_query = f"UPDATE students SET id='{new_id}', name='{name}', age={age}, gender='{gender}', phone='{phone}' WHERE id='{id}'"
+        update_query = f"UPDATE students SET id='{new_id}', name='{name}', age={age}, gender='{gender}', phone='{phone}',parents_name='{parents_name}',address='{address}' WHERE id='{id}'"
         cursor.execute(update_query)
 
         conn.commit()
@@ -620,6 +882,8 @@ class LoginRegisterFrame(tk.Frame):
         self.entry_age.delete(0, tk.END)
         self.entry_gender.delete(0, tk.END)
         self.entry_phone.delete(0, tk.END)
+        self.entry_parents_name.delete(0, tk.END)
+        self.entry_address.delete(0, tk.END)
         messagebox.showinfo("更新成功", "更新成功，学生信息已更新。")  # 弹出消息框提示用户
         # 关闭游标和连接
         cursor.close()
@@ -722,9 +986,13 @@ class LoginRegisterFrame(tk.Frame):
         self.roll_call_history.append(selected_student)
         self.label_result.config(text=selected_student)
 
+        # 弹出对话框询问是否出勤
+        answer = messagebox.askquestion("是否出勤", f"{selected_student} 是否出勤?")
+        attendance = "出勤" if answer == "yes" else "未出勤"
+
         # 将点名记录存入数据库
-        insert_query = "INSERT INTO history (date, name) VALUES (%s, %s)"
-        values = (self.today, selected_student)
+        insert_query = "INSERT INTO history (date, name,chuqing) VALUES (%s, %s,%s)"
+        values = (self.today, selected_student, attendance)
         cursor.execute(insert_query, values)
         conn.commit()
         # 关闭游标和连接
@@ -733,7 +1001,7 @@ class LoginRegisterFrame(tk.Frame):
     def view_history(self):
         cursor = conn.cursor()
         # 从数据库中检索历史记录
-        query = "SELECT date, name FROM history ORDER BY date ASC"
+        query = "SELECT date, name,chuqing FROM history ORDER BY date ASC"
         cursor.execute(query)
         history_rows = cursor.fetchall()
 
@@ -762,7 +1030,10 @@ class LoginRegisterFrame(tk.Frame):
                 elif i in names:
                     pass
                 else:
-                    names = names + i + '、'
+                    sql = f"""SELECT chuqing FROM history WHERE name = '{i}' ORDER BY id DESC LIMIT 1;"""
+                    cursor.execute(sql)
+                    for j in cursor.fetchall():
+                        names = names + i + f'（{j[0]}）' + '、'
             self.lb_2.insert(tk.END, f"{date_str}：{names[:-1]}")
         # 关闭游标和连接
         cursor.close()
