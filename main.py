@@ -823,7 +823,7 @@ class LoginRegisterFrame(tk.Frame):
             messagebox.showwarning("警告", "请选择要删除的学生")
             return
         selected_student = self.lb.get(index)
-        id = selected_student.split()[0]
+        id = selected_student.split('|')[0]
         # 执行SQL删除
         delete_query = f"DELETE FROM students WHERE id='{id}'"
         cursor.execute(delete_query)
